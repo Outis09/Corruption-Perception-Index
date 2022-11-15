@@ -401,4 +401,5 @@ ORDER BY year;
 |2020|43|
 |2021|43|
 
+![cpi1](https://user-images.githubusercontent.com/104911707/201991405-ebe46805-4135-4f86-b8d9-9ae68b17eb90.png)
 
