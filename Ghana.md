@@ -5,8 +5,8 @@ What was Ghana's CPI in 2021?
 ```sql
 SELECT country,
        score
-FROM active
-WHERE country = 'Ghana'
+  FROM active
+ WHERE country = 'Ghana'
   AND year = '2021';
 ```
 
@@ -20,14 +20,15 @@ WHERE country = 'Ghana'
 How does this compare with the rest of the world in terms of rank and average?
 ------
 **Rank**
+
 **Query:**
 
 ```sql
 SELECT country,
        score,
        rank
-FROM active
-WHERE country = 'Ghana'
+  FROM active
+ WHERE country = 'Ghana'
   AND year = '2021';
 ```
 
@@ -41,14 +42,22 @@ WHERE country = 'Ghana'
 **Average**
 **Query:**
 ```sql
-WITH avg_score as (SELECT round(avg(score),2) as avg_score
-FROM active
-WHERE year = '2021'),
-gh_score as (SELECT score as gh_score
-			FROM active
-			WHERE country = 'Ghana' AND year = '2021')
-SELECT gh_score,avg_score
-FROM gh_score, avg_score;
+WITH 
+--gets average score for the world in 2021
+avg_score as (
+	SELECT round(avg(score),2) as avg_score
+          FROM active
+         WHERE year = '2021'
+	 ),
+--gets Ghana's score for 2021
+gh_score as (
+	SELECT score as gh_score
+          FROM active
+         WHERE country = 'Ghana' AND year = '2021')
+	 
+SELECT gh_score,
+       avg_score
+  FROM gh_score, avg_score;
 ```
 
 **Results:**
@@ -63,20 +72,21 @@ How does the score compare with Africa in terms of rank and average?
 **Rank:**
 **Query:**
 ```sql
+--gets the score of African countries
 WITH african_countries as (
 	SELECT country,
-       score,
-	year
-FROM  active
-WHERE region = 'SSA' 
-OR country IN ('Egypt','Algeria','Morocco','Libya','Tunisia') )
+	       score,
+	       year
+	 FROM  active
+	 WHERE region = 'SSA' 
+            OR country IN ('Egypt','Algeria','Morocco','Libya','Tunisia') )
     )
 
 SELECT country,
-	   score,
-	   RANK() OVER(ORDER BY score DESC)
-FROM african_countries
-WHERE year='2021';
+       score,
+       RANK() OVER(ORDER BY score DESC)
+  FROM african_countries
+ WHERE year='2021';
 ```
 
 **Results:**
@@ -99,15 +109,24 @@ Senegal|43|10
 **Average:**
 **Query:**
 ```sql
-WITH avg_score as (SELECT round(avg(score),2) as avg_cpi_africa
-FROM active
-WHERE year = '2021'
-AND (region = 'SSA' OR country IN ('Egypt','Tunisia','Morocco','Libya','Algeria'))),
-gh_score as (SELECT score as gh_score
-			FROM active
-			WHERE country = 'Ghana' AND year = '2021')
-SELECT gh_score,avg_score
-FROM gh_score, avg_score;
+WITH 
+--gets average score of African countries for 2021
+avg_score as (
+	SELECT round(avg(score),2) as avg_cpi_africa
+	  FROM active
+	 WHERE year = '2021'
+	   AND (region = 'SSA' OR country IN ('Egypt','Tunisia','Morocco','Libya','Algeria'))
+	   ),
+--gets Ghana's score for 2021
+gh_score as (
+	SELECT score as gh_score
+	  FROM active
+	 WHERE country = 'Ghana' AND year = '2021'
+	 )
+	 
+SELECT gh_score,
+       avg_score
+  FROM gh_score, avg_score;
 ```
 
 **Results:**
@@ -123,10 +142,12 @@ How does the score compare in West Africa?
 ```sql
 SELECT country,
        score,
-	   RANK() OVER(ORDER BY score DESC)
-FROM active
-WHERE country IN ('Benin','Burkina Faso','Cape Verde', 'Cote d''Ivoire','Gambia','Ghana','Guinea','Guinea Bissau','Liberia','Mali','Niger','Nigeria','Senegal','Sierra Leone','Togo')
-AND year = '2021';
+       RANK() OVER(ORDER BY score DESC)
+  FROM active
+ WHERE country IN ('Benin','Burkina Faso','Cape Verde', 
+                   'Cote d''Ivoire','Gambia','Ghana','Guinea','Guinea Bissau',
+		   'Liberia','Mali','Niger','Nigeria','Senegal','Sierra Leone','Togo')
+   AND year = '2021';
 ```
 
 **Results:**
@@ -152,26 +173,31 @@ How has the score and ranks changed from the past year?
 **World**
 **Query:**
 ```sql
-with prev_year as (
-SELECT score as score_2020,
-       rank as rank_2020
-FROM active
-WHERE country='Ghana'
-AND year = '2020'),
+WITH
+--gets Ghana's score and rank for 2020
+prev_year as (
+	SELECT score as score_2020,
+	       rank as rank_2020
+	  FROM active
+	 WHERE country='Ghana'
+	   AND year = '2020'
+	   ),
+--gets Ghana's score and rank for 2021
 curr_year as (
-SELECT score as score_2021,
-       rank as rank_2021
-FROM active
-WHERE country = 'Ghana'
-AND year = '2021')
+	SELECT score as score_2021,
+	       rank as rank_2021
+	  FROM active
+	 WHERE country = 'Ghana'
+	   AND year = '2021'
+	   )
 
 SELECT score_2020,
        rank_2020,
-	   score_2021,
-	   rank_2021,
-	   score_2021 - score_2020 as score_change,
-	   rank_2021 - rank_2020 as rank_change
-FROM prev_year, curr_year;
+       score_2021,
+       rank_2021,
+       score_2021 - score_2020 as score_change,
+       rank_2021 - rank_2020 as rank_change
+  FROM prev_year, curr_year;
 ```
 
 **Results:**
@@ -183,18 +209,24 @@ FROM prev_year, curr_year;
 
 **Query:**
 ```sql
-with prev_avg as (
-SELECT round(avg(score),2) as avg_2020
-FROM active
-WHERE year = '2020'),
+WITH 
+--gets the world average for 2020
+prev_avg as (
+	SELECT round(avg(score),2) as avg_2020
+          FROM active
+          WHERE year = '2020'
+	  ),
+--gets world average for 2021
 curr_avg as (
-SELECT round(avg(score),2) as avg_2021
-FROM active
-WHERE year = '2021')
+	SELECT round(avg(score),2) as avg_2021
+          FROM active
+         WHERE year = '2021'
+	 )
+	 
 SELECT avg_2020,
        avg_2021,
-	   avg_2021 - avg_2020 as change
-FROM prev_avg,curr_avg;
+       avg_2021 - avg_2020 as change
+  FROM prev_avg,curr_avg;
 ```
 
 **Results:**
@@ -209,27 +241,32 @@ FROM prev_avg,curr_avg;
 Let's compare 2021 rank to 2020 rank in Africa.
 **Query:**
 ```sql
-WITH ranks_2021 as (
+WITH 
+--ranks scores of African countries in 2021
+ranks_2021 as (
 	SELECT country,
-       score,
-	   RANK() OVER (ORDER BY score DESC) as rank_2021
-FROM  active
-WHERE year = '2021'
-AND (region = 'SSA' 
-OR country IN ('Egypt','Algeria','Morocco','Libya','Tunisia') )
-    ),
+	       score,
+	       RANK() OVER (ORDER BY score DESC) as rank_2021
+	  FROM active
+	 WHERE year = '2021'
+	   AND (region = 'SSA' 
+	    OR country IN ('Egypt','Algeria','Morocco','Libya','Tunisia') )
+	    ),
+--ranks scores of African countries for 2020
 ranks_2020 as (
-SELECT country,
-       score,
-	   RANK() OVER (ORDER BY score DESC) as rank_2020
-FROM  active
-WHERE year = '2020'
-AND (region = 'SSA' 
-OR country IN ('Egypt','Algeria','Morocco','Libya','Tunisia') ))
+	SELECT country,
+	       score,
+	       RANK() OVER (ORDER BY score DESC) as rank_2020
+	  FROM active
+	 WHERE year = '2020'
+	   AND (region = 'SSA' 
+	    OR country IN ('Egypt','Algeria','Morocco','Libya','Tunisia') )
+	    )
 
-SELECT rank_2020,rank_2021
-FROM ranks_2020,ranks_2021
-WHERE ranks_2020.country ='Ghana' and ranks_2021.country='Ghana';
+SELECT rank_2020,
+       rank_2021
+  FROM ranks_2020,ranks_2021
+ WHERE ranks_2020.country ='Ghana' and ranks_2021.country='Ghana';
 ```
 
 **Results:**
@@ -244,11 +281,13 @@ Ghana ranked joint 1st with Senegal in West Africa in 2021 so I will check the r
 ```sql
 SELECT country,
        score,
-	   RANK() OVER(ORDER BY score DESC)
-FROM active
-WHERE country IN ('Benin','Burkina Faso','Cape Verde', 'Cote d''Ivoire','Gambia','Ghana','Guinea','Guinea Bissau','Liberia','Mali','Niger','Nigeria','Senegal','Sierra Leone','Togo')
-AND year = '2020'
-LIMIT 5;
+       RANK() OVER(ORDER BY score DESC)
+  FROM active
+ WHERE country IN ('Benin','Burkina Faso','Cape Verde', 'Cote d''Ivoire',
+                    'Gambia','Ghana','Guinea','Guinea Bissau','Liberia','Mali',
+		    'Niger','Nigeria','Senegal','Sierra Leone','Togo')
+   AND year = '2020'
+ LIMIT 5;
 ```
 
 **Results:**
@@ -269,11 +308,10 @@ Over the last decade, what has been Ghana's best performing years in terms of CP
 ```sql
 SELECT country,
        score,
-	   year
-	   --rank--max(score) 
-FROM active
-WHERE country = 'Ghana'
-AND score = (SELECT max(score) FROM active WHERE country = 'Ghana');
+       year 
+  FROM active
+ WHERE country = 'Ghana'
+   AND score = (SELECT max(score) FROM active WHERE country = 'Ghana');
 ```
 
 **Results:**
@@ -287,11 +325,10 @@ AND score = (SELECT max(score) FROM active WHERE country = 'Ghana');
 ```sql
 SELECT country,
        score,
-	   year
-	   --rank--max(score) 
-FROM active
-WHERE country = 'Ghana'
-AND score = (SELECT min(score) FROM active WHERE country = 'Ghana');
+       year 
+  FROM active
+ WHERE country = 'Ghana'
+   AND score = (SELECT min(score) FROM active WHERE country = 'Ghana');
 ```
 
 **Results:**
@@ -307,20 +344,27 @@ I will compare the average CPI of the four years each government was in power in
 
 **Query:**
 ```sql
-WITH nadaa_govt as (
-SELECT score as nadaa_scores,
-       year
-FROM active
-WHERE country = 'Ghana'
-  AND year::int BETWEEN 2017 AND 2020),
-  jdm_govt as (
-  SELECT score as jdm_scores,
-         year
-  FROM active
-  WHERE country = 'Ghana'
-    AND year::int BETWEEN 2013 and 2016)
-SELECT avg(nadaa_scores) as nadaa_avg ,avg(jdm_scores) as jdm_avg
-FROM nadaa_govt,jdm_govt;
+WITH 
+--gets scores from 2017 to 2020
+nadaa_govt as (
+	SELECT score as nadaa_scores,
+	       year
+	  FROM active
+	 WHERE country = 'Ghana'
+	   AND year::int BETWEEN 2017 AND 2020
+	   ),
+--gets scores from 2013 to 2016
+jdm_govt as (
+	SELECT score as jdm_scores,
+	       year
+	  FROM active
+	 WHERE country = 'Ghana'
+	   AND year::int BETWEEN 2013 and 2016
+	   )
+	   
+SELECT avg(nadaa_scores) as nadaa_avg ,
+       avg(jdm_scores) as jdm_avg
+  FROM nadaa_govt,jdm_govt;
 ```
 
 **Results:**
@@ -333,10 +377,10 @@ FROM nadaa_govt,jdm_govt;
 Trend over the past 10 years?
 **Query:**
 ```sql
-SELECT year,
-       score
-FROM active
-WHERE country = 'Ghana'
+  SELECT year,
+         score
+    FROM active
+   WHERE country = 'Ghana'
 ORDER BY year; 
 ```
 
