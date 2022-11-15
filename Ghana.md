@@ -40,6 +40,7 @@ SELECT country,
 * With a score of 43, Ghana ranked 73rd in the world.
 
 **Average**
+
 **Query:**
 ```sql
 WITH 
@@ -70,6 +71,7 @@ SELECT gh_score,
 How does the score compare with Africa in terms of rank and average?
 -----
 **Rank:**
+
 **Query:**
 ```sql
 --gets the score of African countries
@@ -107,6 +109,7 @@ Senegal|43|10
 * Ghana ranked joint 10th in Africa.
 
 **Average:**
+
 **Query:**
 ```sql
 WITH 
@@ -230,7 +233,7 @@ SELECT avg_2020,
 ```
 
 **Results:**
-|avg_2020|avg_2021|-0.07|
+|avg_2020|avg_2021|change|
 |--------|--------|-----|
 |43.34|43.27|-0.07|
 
