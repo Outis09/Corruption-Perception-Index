@@ -177,6 +177,7 @@ SELECT country,
 ** Ghana ranked joint first in West Africa
 
 How has the score and ranks changed from the past year?
+-----
 
 **World**
 
@@ -311,7 +312,7 @@ SELECT country,
 
 With the same score of 43 in 2020, Ghana ranked 2nd in West Africa. Senegal ranked first in West Africa. This goes to prove that Ghana's first position in West Africa and the position increase in Africa in 2021 is as a result of the scores dropping in other countries.
 
-Over the last decade, what has been Ghana's best performing years in terms of CPI
+Over the last decade, what has been Ghana's best and worst performing years in terms of CPI
 -----
 
 **Best Year**
