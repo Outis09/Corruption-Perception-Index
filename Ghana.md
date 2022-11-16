@@ -137,7 +137,11 @@ SELECT gh_score,
 |--------|--------------|
 |43|32.57|
 
+![cpi2](https://user-images.githubusercontent.com/104911707/202183837-31de3b95-a56b-4aae-8b75-2a57d36cce67.png)
+
 * Ghana's CPI in 2021 is above the average CPI in Africa
+
+
 
 How does the score compare in West Africa?
 ---
@@ -173,7 +177,9 @@ SELECT country,
 ** Ghana ranked joint first in West Africa
 
 How has the score and ranks changed from the past year?
+
 **World**
+
 **Query:**
 ```sql
 WITH
@@ -242,6 +248,7 @@ SELECT avg_2020,
 * It could also be that even through the CPI remianed the same in Ghana over the two years, the CPI of any of the 74 countries ahead of Ghana in 2020 dropped in 2021 hence why Ghana's position increased.
 
 Let's compare 2021 rank to 2020 rank in Africa.
+
 **Query:**
 ```sql
 WITH 
@@ -306,7 +313,9 @@ With the same score of 43 in 2020, Ghana ranked 2nd in West Africa. Senegal rank
 
 Over the last decade, what has been Ghana's best performing years in terms of CPI
 -----
+
 **Best Year**
+
 **Query:**
 ```sql
 SELECT country,
@@ -323,7 +332,9 @@ SELECT country,
 |Ghana|48|2014|
 
 * Ghana's best performing year in terms of CPI is 2014 with a score of 48
+
 **Worst year**
+
 **Query:**
 ```sql
 SELECT country,
@@ -375,9 +386,12 @@ SELECT avg(nadaa_scores) as nadaa_avg ,
 |---------|-------|
 |41.25|46|
 
+![cpi4](https://user-images.githubusercontent.com/104911707/202189000-70e3eac0-e1f5-452d-9fd8-f25fbc33082b.png)
+
 * In comparison the government of John Dramani Mahama did better than the government of Nana Akuffo Addo in terms of CPI.
 
 Trend over the past 10 years?
+
 **Query:**
 ```sql
   SELECT year,
@@ -401,5 +415,5 @@ ORDER BY year;
 |2020|43|
 |2021|43|
 
-![cpi1](https://user-images.githubusercontent.com/104911707/201991405-ebe46805-4135-4f86-b8d9-9ae68b17eb90.png)
+![cpi3](https://user-images.githubusercontent.com/104911707/202185436-8c2a6a53-b13a-4060-b88a-0302d1424b29.png)
 
